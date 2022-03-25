@@ -1,0 +1,21 @@
+IMPORTANT FILES
+
+/Users/lucas/Documents/Programs/privacy-activism/browser/chromium/src/third_party/blink/renderer/modules/geolocation/geolocation_coordinates.cc
+
+/Users/lucas/Documents/Programs/privacy-activism/browser/chromium/src/third_party/blink/renderer/modules/geolocation/geolocation.cc
+
+/Users/lucas/Documents/Programs/privacy-activism/browser/chromium/src/third_party/blink/renderer/modules/geolocation/geoposition.h
+
+---------------------------------------------
+
+BREAKPOINTS
+
+b geolocation
+b GeolocationCoordinates
+b Geolocation::getCurrentPosition
+
+---------------------------------------------
+
+CHANGES
+
+* Added coordinate randomizer to geolocation_coordinates.cc
