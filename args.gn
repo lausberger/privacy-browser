@@ -1,6 +1,0 @@
-# Set build arguments here. See `gn help buildargs`.
-google_api_key="AIzaSyBQUyuOMDUdLUt-H1JBBKyE6QmzhLalmUg"
-google_default_client_id="755144329802-uuqcspe4epnedu04urvuo5v3leg35ah8.apps.googleusercontent.com"
-google_default_client_secret="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"
-is_debug=true
-symbol_level=2
