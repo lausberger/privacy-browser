@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Test Website!</title>
+    </head>
+    <body>
+        <p id="lat">Latitude: </p>
+        <p id="lng">Longitude: </p>
+        <script>
+            var success = function(position) {
+                pos = position;
+                console.log(position);
+                console.log(pos.coords.latitude);
+                console.log(pos.coords.longitude);
+
+                document.getElementById("lat").insertAdjacentHTML('beforeend', pos.coords.latitude);
+                document.getElementById("lng").insertAdjacentHTML('beforeend', pos.coords.longitude);
+            }
+
+            var error = function(err) {
+                console.log("Error: " + err); 
+                console.log(err);
+                var errorobj = err;
+            }
+
+            navigator.geolocation.getCurrentPosition(success, error);
+
+            // here's some audio fingerprint stuff
+            pxi_oscillator = context.createOscillator();
+            pxi_oscillator.type = "triangle";
+            pxi_oscillator.frequency.value = 1e4;
+
+            // Create and configure compressor
+            pxi_compressor = context.createDynamicsCompressor();
+            pxi_compressor.threshold && (pxi_compressor.threshold.value = -50);
+            pxi_compressor.knee && (pxi_compressor.knee.value = 40);
+            pxi_compressor.ratio && (pxi_compressor.ratio.value = 12);
+            pxi_compressor.reduction && (pxi_compressor.reduction.value = -20);
+            pxi_compressor.attack && (pxi_compressor.attack.value = 0);
+            pxi_compressor.release && (pxi_compressor.release.value = .25);
+
+            // Connect nodes
+            pxi_oscillator.connect(pxi_compressor);
+            pxi_compressor.connect(context.destination);
+
+            // Start audio processing
+            pxi_oscillator.start(0);
+            context.startRendering();
+            context.oncomplete = function(evnt) {
+              pxi_output = 0;
+              var sha1 = CryptoJS.algo.SHA1.create();
+              for (var i = 0; i < evnt.renderedBuffer.length; i++) {
+                  sha1.update(evnt.renderedBuffer.getChannelData(0)[i].toString());
+              }
+              hash = sha1.finalize();
+              pxi_full_buffer_hash = hash.toString(CryptoJS.enc.Hex);
+              set_result(pxi_full_buffer_hash, "pxi_full_buffer_result");
+              console.log(pxi_full_buffer_hash);
+              for (var i = 4500; 5e3 > i; i++) {
+                pxi_output += Math.abs(evnt.renderedBuffer.getChannelData(0)[i]);
+              }
+              set_result(pxi_output.toString(), "pxi_result");
+              pxi_compressor.disconnect();
+            }
+        </script>
+    </body>
+</html>
